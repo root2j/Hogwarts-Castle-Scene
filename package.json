@@ -1,0 +1,22 @@
+{
+  "name": "3j-scene",
+  "version": "1.0.0",
+  "description": "A simple Three.js scene",
+  "main": "script1.js",
+  "scripts": {
+    "start": "vite"
+  },
+  "dependencies": {
+    "three": "^0.128.0"
+  },
+  "devDependencies": {
+    "vite": "^4.5.9"
+  },
+  "keywords": [
+    "threejs",
+    "scene",
+    "webgl"
+  ],
+  "author": "Your Name",
+  "license": "MIT"
+}
