@@ -1,0 +1,25 @@
+.label1{
+    background-image: url('./hogwarts/LabelIcons/icons8-hogwarts-legacy-gryffindor.svg');
+    height: 50px;
+    width: 50px;
+}
+.label2{
+    background-image: url('./hogwarts/LabelIcons/icons8-hogwarts-legacy-slytherin.svg');
+    height: 50px;
+    width: 50px;
+}
+.label3{
+    background-image: url('./hogwarts/LabelIcons/icons8-hogwarts-legacy-ravenclaw.svg');
+    height: 50px;
+    width: 50px;
+}
+.label4{
+    background-image: url('./hogwarts/LabelIcons/icons8-hogwarts-legacy-hufflepuff.svg');
+    height: 50px;
+    width: 50px;
+}
+.label5{
+    background-image: url('./hogwarts/LabelIcons/icons8-hogwarts-legacy.svg');
+    height: 50px;
+    width: 50px;
+}

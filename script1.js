@@ -6,6 +6,8 @@ import { ShaderPass } from "three/examples/jsm/postprocessing/ShaderPass";
 import { FXAAShader } from "three/examples/jsm/shaders/FXAAShader";
 import { UnrealBloomPass } from "three/examples/jsm/postprocessing/UnrealBloomPass";
 import { TAARenderPass } from "three/examples/jsm/postprocessing/TAARenderPass.js";
+import { CSS2DRenderer, CSS2DObject } from 'three/examples/jsm/renderers/CSS2DRenderer.js';
+// import { label } from "three/tsl";
 
 // ---------------------------------------------------------------------------
 // Utility Functions
@@ -19,10 +21,11 @@ function isPhone() {
   );
 }
 
-// Events Tags
+// Events Tags, adjust positions slightly
 // Optimisation
 // Main Website Integration
 // Design
+// Spinning Issue
 
 
 // ---------------------------------------------------------------------------
@@ -118,6 +121,7 @@ const clock = new THREE.Clock();
 
 // Post–processing variables
 let composer;
+let labelRenderer;
 let taaRenderPass; // Global reference to TAARenderPass
 let taaIndex = 0; // Frame counter for toggling accumulation
 
@@ -155,9 +159,9 @@ const hitboxPositions = [
 const hitboxSizes = [
   new THREE.Vector3(0.6, 1.6, 0.6),
   new THREE.Vector3(1.5, 1, 1.5),
-  new THREE.Vector3(0.6, 2.5, 0.6),
-  new THREE.Vector3(1.2, 0.6, 1.2),
-  new THREE.Vector3(0.3, 1.6, 0.3),
+  new THREE.Vector3(0.6, 1.7, 0.6), // Ravenclaw Event
+  new THREE.Vector3(1.2, 0.9, 1.2),
+  new THREE.Vector3(0.3, 1.9, 0.3),
 ];
 const raycaster = new THREE.Raycaster();
 
@@ -412,6 +416,12 @@ function setupPostProcessing() {
 
 // Create hitboxes only once.
 function createHitboxes() {
+  labelRenderer = new CSS2DRenderer();
+  labelRenderer.setSize(window.innerWidth, window.innerHeight);
+  labelRenderer.domElement.style.position = 'absolute';
+  labelRenderer.domElement.style.top = '0';
+  document.body.appendChild(labelRenderer.domElement);
+
   for (let i = 0; i < hitboxPositions.length; i++) {
     const hitboxGeometry = new THREE.BoxGeometry(
       hitboxSizes[i].x,
@@ -427,7 +437,16 @@ function createHitboxes() {
     );
     scene.add(hitbox);
     hitboxes.push(hitbox);
+
+    const labelDiv = document.createElement('div');
+    labelDiv.className = `label${i + 1}`;
+    // labelDiv.textContent = `Label ${i + 1}`;
+    const label = new CSS2DObject(labelDiv);
+    label.position.set(0, hitboxSizes[i].y / 2 + 0.1, 0); 
+    label.scale.setScalar(100);
+    hitbox.add(label);
   }
+  return labelRenderer
 }
 
 // ---------------------------------------------------------------------------
@@ -530,7 +549,7 @@ function setupEventListeners() {
 const stats = new Stats();
 if (params.showStats){document.body.appendChild(stats.dom);}
 
-function animate() {
+function animate( ) {
   requestAnimationFrame(animate);
 
   // Lock FPS to 30 on smartphones.
@@ -566,6 +585,7 @@ function animate() {
   renderer.autoClear = false;
   renderer.clear();
   renderer.render(scene, camera);
+  labelRenderer.render(scene, camera);
   composer.render();
 
   stats.end();
@@ -578,12 +598,12 @@ function init() {
       setupScene();
       setupLights();
       setupStars();
+      createHitboxes();
       setupPostProcessing();
-      createHitboxes(); // Create hitboxes just once.
       setupEventListeners();
       animate();
     });
-  });
+  }).catch((error) => console.error("Error loading models:", error));
 }
 
 init();
